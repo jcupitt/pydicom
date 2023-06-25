@@ -48,4 +48,3 @@ class LogLevel:
     INFO = 20
     DEBUG = 10
     NOTSET = 0
-

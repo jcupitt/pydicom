@@ -28,6 +28,9 @@ void dcm_filehandle_destroy(DcmFilehandle *filehandle);
 DcmDataSet *dcm_filehandle_get_file_meta(DcmError **error,
                                          DcmFilehandle *filehandle);
 
+const char *dcm_dict_keyword_from_tag(uint32_t tag);
+uint32_t dcm_dict_tag_from_keyword(const char *keyword);
+
 int dcm_dataset_count(DcmDataSet *dataset);
 void dcm_dataset_destroy(DcmDataSet *dataset);
 
@@ -85,6 +88,7 @@ from .enums import *
 from .filehandle import *
 from .dataset import *
 from .error import *
+from .tag import *
 
 __all__ = [
     'ErrorCode',

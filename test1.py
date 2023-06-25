@@ -20,4 +20,7 @@ print(f"testing read_file_meta ...")
 file_meta = file.read_file_meta()
 print(f"file_meta = {file_meta}")
 
+print(f"testing Tag ...")
+tag = pydicom.Tag.create_from_keyword("NumberOfFrames")
+print(f"NumberOfFrames = {tag}")
 

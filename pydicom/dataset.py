@@ -15,5 +15,7 @@ class DataSet:
     def __repr__(self):
         return "<libdicom DataSet>"
 
+    def count(self):
+        return dicom_lib.dcm_dataset_count(self.pointer)
 
 
