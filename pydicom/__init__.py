@@ -19,14 +19,16 @@ const char *dcm_error_code_name(int code);
 void dcm_error_clear(DcmError **error);
 const char *dcm_error_get_summary(DcmError *error);
 const char *dcm_error_get_message(DcmError *error);
-DcmErrorCode dcm_error_get_code(DcmError *error);
+int dcm_error_get_code(DcmError *error);
 
 DcmFilehandle *dcm_filehandle_create_from_file(DcmError **error,
                                                const char *filepath);
 void dcm_filehandle_destroy(DcmFilehandle *filehandle);
 
-DcmDataSet *dcm_filehandle_read_file_meta(DcmError **error,
-                                          DcmFilehandle *filehandle);
+DcmDataSet *dcm_filehandle_get_file_meta(DcmError **error,
+                                         DcmFilehandle *filehandle);
+
+int dcm_dataset_count(DcmDataSet *dataset);
 void dcm_dataset_destroy(DcmDataSet *dataset);
 
 
@@ -82,6 +84,7 @@ print(f"libdicom version: {version()}")
 from .enums import *
 from .filehandle import *
 from .dataset import *
+from .error import *
 
 __all__ = [
     'ErrorCode',

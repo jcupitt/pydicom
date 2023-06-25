@@ -4,7 +4,7 @@ from pydicom import ffi, dicom_lib, _to_string, _to_bytes
 class Filehandle:
     def __init__(self, pointer):
         # record the pointer we were given to manage
-        # on GC, unref
+        # on GC, destroy it
         self.pointer = ffi.gc(pointer, dicom_lib.dcm_filehandle_destroy)
         return 
 
@@ -14,7 +14,7 @@ class Filehandle:
         pointer = dicom_lib.dcm_filehandle_create_from_file(error.pointer,
                                                             _to_bytes(filename))
         if pointer == ffi.NULL:
-            raise Error(error)
+            raise error.exception()
 
         return Filehandle(pointer)
 
@@ -22,8 +22,12 @@ class Filehandle:
         return "<libdicom Filehandle>"
 
     def read_file_meta(self):
-        pointer = dicom_lib.dcm_filehandle_read_file_meta(ffi.NULL,
-                                                          self.pointer)
+        error = pydicom.Error()
+        pointer = dicom_lib.dcm_filehandle_get_file_meta(error.pointer,
+                                                         self.pointer)
+        if pointer == ffi.NULL:
+            raise error.exception()
+
         return pydicom.DataSet(pointer)
 
 
