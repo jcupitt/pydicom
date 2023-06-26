@@ -13,9 +13,37 @@ class DataSet:
         return 
 
     def __repr__(self):
-        return "<libdicom DataSet>"
+        return f"<DataSet of {self.count()} items>"
 
     def count(self):
         return dicom_lib.dcm_dataset_count(self.pointer)
+
+    def tags(self):
+        n = self.count()
+        int_tags = ffi.new(f"uint32_t[{n}]")
+        dicom_lib.dcm_dataset_copy_tags(self.pointer, int_tags, n)
+
+        return [pydicom.Tag(tag) for tag in int_tags]
+
+    def _contains(self, tag):
+        if isinstance(tag, pydicom.Tag):
+            tag = tag.value
+
+        return dicom_lib.dcm_dataset_contains(self.pointer, tag)
+
+    def contains(self, tag):
+        pointer = self._contains(tag)
+        return pointer != ffi.NULL
+
+    def get(self, tag):
+        pointer = self._contains(tag)
+        if pointer == ffi.NULL:
+            raise Exception(f"dataset does not contain tag {tag}")
+
+        return pydicom.Element(pointer)
+
+
+
+
 
 
