@@ -1,3 +1,4 @@
+import weakref
 from cffi import FFI
 from .version import __version__
 
@@ -15,6 +16,7 @@ typedef struct _DcmFilehandle DcmFilehandle;
 typedef struct _DcmDataSet DcmDataSet;
 typedef struct _DcmSequence DcmSequence;
 typedef struct _DcmElement DcmElement;
+typedef struct _DcmFrame DcmFrame;
 
 const char *dcm_error_code_str(int code);
 const char *dcm_error_code_name(int code);
@@ -34,6 +36,14 @@ DcmDataSet *dcm_filehandle_get_file_meta(DcmError **error,
                                          DcmFilehandle *filehandle);
 DcmDataSet *dcm_filehandle_get_metadata(DcmError **error,
                                         DcmFilehandle *filehandle);
+bool dcm_filehandle_read_pixeldata(DcmError **error, DcmFilehandle *filehandle);
+DcmFrame *dcm_filehandle_read_frame(DcmError **error,
+                                    DcmFilehandle *filehandle,
+                                    uint32_t frame_number);
+DcmFrame *dcm_filehandle_read_frame_position(DcmError **error,
+                                             DcmFilehandle *filehandle,
+                                             uint32_t column,
+                                             uint32_t row);
 
 const char *dcm_dict_keyword_from_tag(uint32_t tag);
 uint32_t dcm_dict_tag_from_keyword(const char *keyword);
@@ -75,17 +85,28 @@ uint32_t dcm_sequence_count(const DcmSequence *seq);
 DcmDataSet *dcm_sequence_get(DcmError **error,
                              const DcmSequence *seq, uint32_t index);
 
-
-
-
-
-
+void dcm_frame_destroy(DcmFrame *frame);
+uint32_t dcm_frame_get_number(const DcmFrame *frame);
+uint32_t dcm_frame_get_length(const DcmFrame *frame);
+uint16_t dcm_frame_get_rows(const DcmFrame *frame);
+uint16_t dcm_frame_get_columns(const DcmFrame *frame);
+uint16_t dcm_frame_get_samples_per_pixel(const DcmFrame *frame);
+uint16_t dcm_frame_get_bits_allocated(const DcmFrame *frame);
+uint16_t dcm_frame_get_bits_stored(const DcmFrame *frame);
+uint16_t dcm_frame_get_high_bit(const DcmFrame *frame);
+uint16_t dcm_frame_get_pixel_representation(const DcmFrame *frame);
+uint16_t dcm_frame_get_planar_configuration(const DcmFrame *frame);
+const char *dcm_frame_get_photometric_interpretation(const DcmFrame *frame);
+const char *dcm_frame_get_transfer_syntax_uid(const DcmFrame *frame);
+const char *dcm_frame_get_value(const DcmFrame *frame);
 
 ''')
 
 print(f"init for libdicom ...")
 dicom_lib.dcm_init()
 
+# we track references which we must keep alive here
+reference_dict = weakref.WeakKeyDictionary()
 
 def _to_string(x):
     """Convert to a unicode string.
@@ -137,7 +158,4 @@ from .element import *
 from .dataset import *
 from .sequence import *
 from .filehandle import *
-
-__all__ = [
-]
-
+from .frame import *

@@ -39,6 +39,34 @@ class Filehandle:
 
         return pydicom.DataSet(pointer)
 
+    def read_pixeldata(self):
+        error = pydicom.Error()
+        success = dicom_lib.dcm_filehandle_read_pixeldata(error.pointer,
+                                                          self.pointer)
+        if not success:
+            raise error.exception()
 
+    def read_frame(self, frame_number):
+        error = pydicom.Error()
+        pointer = dicom_lib.dcm_filehandle_read_frame(error.pointer,
+                                                      self.pointer,
+                                                      frame_number)
+        if pointer == ffi.NULL:
+            raise error.exception()
+
+        # pointer will need freeing, so Frame must steal it (take ownership)
+        return pydicom.Frame(pointer, True)
+
+    def read_frame_position(self, column, row):
+        error = pydicom.Error()
+        pointer = dicom_lib.dcm_filehandle_read_frame_position(error.pointer,
+                                                               self.pointer,
+                                                               column,
+                                                               row)
+        if pointer == ffi.NULL:
+            raise error.exception()
+
+        # pointer will need freeing, so Frame must steal it (take ownership)
+        return pydicom.Frame(pointer, True)
 
 
