@@ -2,7 +2,7 @@
 
 This is a tiny, experimental binding for
 [libdicom](https://github.com/jcupitt/libdicom). This is a DICOM read
-library focussed on Whole Slide Imaging (WSI). It should be fast, and only
+library focused on Whole Slide Imaging (WSI). It should be fast, and only
 needs a little memory.
 
 This binding was made to validate the libdicom API. It is not supposed to
