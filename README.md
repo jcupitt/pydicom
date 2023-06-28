@@ -9,8 +9,16 @@ This binding was made to validate the libdicom API. It is not supposed to
 be ready for production! There are plenty of obvious missing features and
 useful enhancements.
 
-Having said that, it does work, performs well, has no memory leaks (I think),
+Having said that, it does work, performs well, has no known memory leaks,
 and supports the whole libdicom file read API.
+
+# Thanks
+
+Development of this library was supported by NCI Imaging Data Commons
+(https://imaging.datacommons.cancer.gov/), and has been funded in whole or
+in part with Federal funds from the National Cancer Institute, National
+Institutes of Health, under Task Order No. HHSN26110071 under Contract
+No. HHSN261201500003l.
 
 # Read frames
 
