@@ -13,6 +13,7 @@ const char *dcm_get_version(void);
 typedef struct _DcmError DcmError;
 typedef struct _DcmFilehandle DcmFilehandle;
 typedef struct _DcmDataSet DcmDataSet;
+typedef struct _DcmSequence DcmSequence;
 typedef struct _DcmElement DcmElement;
 
 const char *dcm_error_code_str(int code);
@@ -31,6 +32,8 @@ void dcm_filehandle_destroy(DcmFilehandle *filehandle);
 
 DcmDataSet *dcm_filehandle_get_file_meta(DcmError **error,
                                          DcmFilehandle *filehandle);
+DcmDataSet *dcm_filehandle_get_metadata(DcmError **error,
+                                        DcmFilehandle *filehandle);
 
 const char *dcm_dict_keyword_from_tag(uint32_t tag);
 uint32_t dcm_dict_tag_from_keyword(const char *keyword);
@@ -44,8 +47,37 @@ void dcm_dataset_destroy(DcmDataSet *dataset);
 
 uint32_t dcm_element_get_tag(const DcmElement *element);
 int dcm_element_get_vr(const DcmElement *element);
+int dcm_dict_vr_class(int vr);
 uint32_t dcm_element_get_vm(const DcmElement *element);
+uint32_t dcm_element_get_length(const DcmElement *element);
 char *dcm_element_value_to_string(const DcmElement *element);
+bool dcm_element_get_value_integer(DcmError **error,
+                                   const DcmElement *element,
+                                   uint32_t index,
+                                   int64_t *value);
+bool dcm_element_get_value_decimal(DcmError **error,
+                                   const DcmElement *element,
+                                   uint32_t index,
+                                   double *value);
+bool dcm_element_get_value_string(DcmError **error,
+                                  const DcmElement *element,
+                                  uint32_t index,
+                                  const char **value);
+bool dcm_element_get_value_binary(DcmError **error,
+                                  const DcmElement *element,
+                                  const char **value);
+bool dcm_element_get_value_sequence(DcmError **error,
+                                    const DcmElement *element,
+                                    DcmSequence **value);
+
+void dcm_sequence_destroy(DcmSequence *seq);
+uint32_t dcm_sequence_count(const DcmSequence *seq);
+DcmDataSet *dcm_sequence_get(DcmError **error,
+                             const DcmSequence *seq, uint32_t index);
+
+
+
+
 
 
 
@@ -103,6 +135,7 @@ from .vr import *
 from .tag import *
 from .element import *
 from .dataset import *
+from .sequence import *
 from .filehandle import *
 
 __all__ = [

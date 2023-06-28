@@ -26,7 +26,7 @@ except Exception as e:
     print(f"  {e}")
 
 print(f"testing create_from_file ...")
-file = pydicom.Filehandle.create_from_file("synthetic.dcm")
+file = pydicom.Filehandle.create_from_file("sm_image.dcm")
 print(f"file = {file}")
 
 print(f"testing create_from_file error handling ...")
@@ -36,11 +36,34 @@ except Exception as e:
     print(f"expected failure, exception is:")
     print(f"  {e}")
 
-print(f"testing read_file_meta ...")
-file_meta = file.read_file_meta()
+def print_sequence(seq, indent=0):
+    for index in range(0, seq.count()):
+        print(f"{' '*indent}-- Item #{index} --")
+        print_dataset(seq.get(index), indent + 2)
+
+def print_dataset(dataset, indent=0):
+    for tag in dataset.tags():
+        element = dataset.get(tag)
+        print(f"{' '*indent}{element}")
+        if element.vr_class() == pydicom.VRClass.SEQUENCE:
+            seq = element.get_value()
+            print_sequence(seq, indent + 2)
+
+print(f"testing get_file_meta ...")
+file_meta = file.get_file_meta()
 print(f"file_meta = {file_meta}")
 tags = file_meta.tags()
 print(f"tags = {tags}")
 print(f"contains(tags[0]) = {file_meta.contains(tags[0])}")
-print(f"get(tags[0]) = {file_meta.get(tags[0])}")
+print_dataset(file_meta)
+
+print(f"testing get_metadata ...")
+metadata = file.get_metadata()
+print(f"metadata = {metadata}")
+tags = metadata.tags()
+print(f"tags = {tags}")
+print(f"contains(tags[0]) = {metadata.contains(tags[0])}")
+print_dataset(metadata)
+
+
 

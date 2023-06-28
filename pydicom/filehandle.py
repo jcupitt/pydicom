@@ -21,7 +21,7 @@ class Filehandle:
     def __repr__(self):
         return "<libdicom Filehandle>"
 
-    def read_file_meta(self):
+    def get_file_meta(self):
         error = pydicom.Error()
         pointer = dicom_lib.dcm_filehandle_get_file_meta(error.pointer,
                                                          self.pointer)
@@ -29,5 +29,16 @@ class Filehandle:
             raise error.exception()
 
         return pydicom.DataSet(pointer)
+
+    def get_metadata(self):
+        error = pydicom.Error()
+        pointer = dicom_lib.dcm_filehandle_get_metadata(error.pointer,
+                                                        self.pointer)
+        if pointer == ffi.NULL:
+            raise error.exception()
+
+        return pydicom.DataSet(pointer)
+
+
 
 

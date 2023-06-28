@@ -11,3 +11,12 @@ class LogLevel:
     INFO = 20
     DEBUG = 10
     NOTSET = 0
+
+class VRClass:
+    ERROR = 0
+    STRING_MULTI = 1
+    STRING_SINGLE = 2
+    NUMERIC_DECIMAL = 3
+    NUMERIC_INTEGER = 4
+    BINARY = 5
+    SEQUENCE = 6
