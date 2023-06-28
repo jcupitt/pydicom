@@ -1,5 +1,5 @@
-import pydicom
-from pydicom import ffi, dicom_lib, _to_string, _to_bytes
+import pywsidicom
+from pywsidicom import ffi, dicom_lib, _to_string, _to_bytes
 
 class DataSet:
     def __init__(self, pointer, steal=False):
@@ -23,10 +23,10 @@ class DataSet:
         int_tags = ffi.new(f"uint32_t[{n}]")
         dicom_lib.dcm_dataset_copy_tags(self.pointer, int_tags, n)
 
-        return [pydicom.Tag(tag) for tag in int_tags]
+        return [pywsidicom.Tag(tag) for tag in int_tags]
 
     def _contains(self, tag):
-        if isinstance(tag, pydicom.Tag):
+        if isinstance(tag, pywsidicom.Tag):
             tag = tag.value
 
         return dicom_lib.dcm_dataset_contains(self.pointer, tag)
@@ -40,7 +40,7 @@ class DataSet:
         if pointer == ffi.NULL:
             raise Exception(f"dataset does not contain tag {tag}")
 
-        return pydicom.Element(pointer)
+        return pywsidicom.Element(pointer)
 
 
 

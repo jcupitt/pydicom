@@ -1,5 +1,5 @@
-import pydicom
-from pydicom import ffi, dicom_lib, _to_string, _to_bytes
+import pywsidicom
+from pywsidicom import ffi, dicom_lib, _to_string, _to_bytes
 
 class Sequence:
     def __init__(self, pointer, steal=False):
@@ -19,12 +19,12 @@ class Sequence:
         return dicom_lib.dcm_sequence_count(self.pointer)
 
     def get(self, index):
-        error = pydicom.Error()
+        error = pywsidicom.Error()
         pointer = dicom_lib.dcm_sequence_get(error.pointer, self.pointer, index)
         if pointer == ffi.NULL:
             raise error.exception()
 
-        return pydicom.DataSet(pointer)
+        return pywsidicom.DataSet(pointer)
 
 
 

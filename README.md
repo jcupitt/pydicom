@@ -1,4 +1,4 @@
-# pydicom
+# pywsidicom
 
 This is a tiny, experimental binding for
 [libdicom](https://github.com/jcupitt/libdicom) to validate the API. It
@@ -16,11 +16,11 @@ See `read-frames.py`:
 #!/usr/bin/env python
 
 import sys
-import pydicom
+import pywsidicom
 
-file = pydicom.Filehandle.create_from_file(sys.argv[1])
+file = pywsidicom.Filehandle.create_from_file(sys.argv[1])
 metadata = file.get_metadata()
-num_frames_tag = pydicom.Tag.create_from_keyword("NumberOfFrames") 
+num_frames_tag = pywsidicom.Tag.create_from_keyword("NumberOfFrames") 
 num_frames = int(metadata.get(num_frames_tag).get_value()[0])
 for frame_number in range(1, num_frames + 1):
     frame = file.read_frame(frame_number)
@@ -70,7 +70,7 @@ See `print-metadata.py`:
 #!/usr/bin/env python
 
 import sys
-import pydicom
+import pywsidicom
 
 def print_sequence(seq, indent=0):
     for index in range(0, seq.count()):
@@ -81,11 +81,11 @@ def print_dataset(dataset, indent=0):
     for tag in dataset.tags():
         element = dataset.get(tag)
         print(f"{' '*indent}{element}")
-        if element.vr_class() == pydicom.VRClass.SEQUENCE:
+        if element.vr_class() == pywsidicom.VRClass.SEQUENCE:
             seq = element.get_value()
             print_sequence(seq, indent + 2) 
 
-file = pydicom.Filehandle.create_from_file(sys.argv[1])
+file = pywsidicom.Filehandle.create_from_file(sys.argv[1])
 file_meta = file.get_file_meta()
 print(f"===File Meta Information===")
 print_dataset(file_meta)

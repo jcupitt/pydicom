@@ -1,5 +1,5 @@
-import pydicom
-from pydicom import ffi, dicom_lib, _to_string, _to_bytes
+import pywsidicom
+from pywsidicom import ffi, dicom_lib, _to_string, _to_bytes
 
 class Element:
     def __init__(self, pointer, steal=False):
@@ -20,10 +20,10 @@ class Element:
                f"{self.value_to_string()}"
 
     def tag(self):
-        return pydicom.Tag(dicom_lib.dcm_element_get_tag(self.pointer))
+        return pywsidicom.Tag(dicom_lib.dcm_element_get_tag(self.pointer))
 
     def vr(self):
-        return pydicom.VR(dicom_lib.dcm_element_get_vr(self.pointer))
+        return pywsidicom.VR(dicom_lib.dcm_element_get_vr(self.pointer))
 
     def vr_class(self):
         return dicom_lib.dcm_dict_vr_class(self.vr().value)
@@ -35,7 +35,7 @@ class Element:
         return dicom_lib.dcm_element_get_length(self.pointer)
 
     def get_value_integer(self, index):
-        error = pydicom.Error()
+        error = pywsidicom.Error()
         intp = ffi.new("int64_t[1]")
         success = dicom_lib.dcm_element_get_value_integer(error.pointer,
                                                           self.pointer,
@@ -47,7 +47,7 @@ class Element:
         return intp[0]
 
     def get_value_decimal(self, index):
-        error = pydicom.Error()
+        error = pywsidicom.Error()
         doublep = ffi.new("double[1]")
         success = dicom_lib.dcm_element_get_value_decimal(error.pointer,
                                                           self.pointer,
@@ -59,7 +59,7 @@ class Element:
         return doublep[0]
 
     def get_value_string(self, index):
-        error = pydicom.Error()
+        error = pywsidicom.Error()
         strp = ffi.new("char*[1]")
         success = dicom_lib.dcm_element_get_value_string(error.pointer,
                                                          self.pointer,
@@ -72,7 +72,7 @@ class Element:
 
     def get_value_binary(self):
         length = self.length()
-        error = pydicom.Error()
+        error = pywsidicom.Error()
         binp = ffi.new("char*[1]")
         success = dicom_lib.dcm_element_get_value_binary(error.pointer,
                                                          self.pointer,
@@ -90,7 +90,7 @@ class Element:
 
     def get_value_sequence(self):
         length = self.length()
-        error = pydicom.Error()
+        error = pywsidicom.Error()
         seqp = ffi.new("DcmSequence*[1]")
         success = dicom_lib.dcm_element_get_value_sequence(error.pointer,
                                                            self.pointer,
@@ -98,20 +98,20 @@ class Element:
         if not success:
             raise error.exception()
 
-        return pydicom.Sequence(seqp[0])
+        return pywsidicom.Sequence(seqp[0])
 
     def get_value(self):
         klass = self.vr_class()
-        if klass == pydicom.VRClass.NUMERIC_INTEGER:
+        if klass == pywsidicom.VRClass.NUMERIC_INTEGER:
             return [self.get_value_integer(i) for i in range(0, self.vm())]
-        elif klass == pydicom.VRClass.NUMERIC_DECIMAL:
+        elif klass == pywsidicom.VRClass.NUMERIC_DECIMAL:
             return [self.get_value_decimal(i) for i in range(0, self.vm())]
-        elif klass == pydicom.VRClass.STRING_SINGLE or \
-            klass == pydicom.VRClass.STRING_MULTI:
+        elif klass == pywsidicom.VRClass.STRING_SINGLE or \
+            klass == pywsidicom.VRClass.STRING_MULTI:
             return [self.get_value_string(i) for i in range(0, self.vm())]
-        elif klass == pydicom.VRClass.BINARY:
+        elif klass == pywsidicom.VRClass.BINARY:
             return self.get_value_binary()
-        elif klass == pydicom.VRClass.SEQUENCE:
+        elif klass == pywsidicom.VRClass.SEQUENCE:
             return self.get_value_sequence()
         else:
             raise Exception("unimplemented VR class")
