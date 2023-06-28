@@ -1,12 +1,16 @@
 # pywsidicom
 
 This is a tiny, experimental binding for
-[libdicom](https://github.com/jcupitt/libdicom) to validate the API. It
-is not supposed to be ready for production! There are plenty of obvious
-missing features and useful enhancements.
+[libdicom](https://github.com/jcupitt/libdicom). This is a DICOM read
+library focussed on Whole Slide Imaging (WSI). It should be fast, and only
+needs a little memory.
 
-Having said that, it does work, performs well, has no memory leaks (I
-think), and supports the whole libdicom file read API.
+This binding was made to validate the libdicom API. It is not supposed to
+be ready for production! There are plenty of obvious missing features and
+useful enhancements.
+
+Having said that, it does work, performs well, has no memory leaks (I think),
+and supports the whole libdicom file read API.
 
 # Read frames
 
