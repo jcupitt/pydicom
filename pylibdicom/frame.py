@@ -1,5 +1,5 @@
-import pywsidicom
-from pywsidicom import ffi, dicom_lib, _to_string, _to_bytes, reference_dict
+import pylibdicom
+from pylibdicom import ffi, dicom_lib, _to_string, _to_bytes, reference_dict
 
 class Frame:
     def __init__(self, pointer, steal=False):

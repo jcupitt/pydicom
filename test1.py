@@ -1,37 +1,37 @@
 #!/usr/bin/env python
 
-import pywsidicom
+import pylibdicom
 
 print(f"testing Tag ...")
-tag = pywsidicom.Tag.create_from_keyword("NumberOfFrames")
+tag = pylibdicom.Tag.create_from_keyword("NumberOfFrames")
 print(f"NumberOfFrames = {tag}")
 print(f"tag.keyword() = {tag.keyword()}")
 
 print(f"testing bad Tag ...")
 try:
-    tag = pywsidicom.Tag.create_from_keyword("poop")
+    tag = pylibdicom.Tag.create_from_keyword("poop")
 except Exception as e:
     print(f"expected failure, exception is:")
     print(f"  {e}")
 
 print(f"testing VR ...")
-vr = pywsidicom.VR.create_from_name("SQ")
+vr = pylibdicom.VR.create_from_name("SQ")
 print(f"create_from_name('SQ') = {vr}")
 
 print(f"testing bad VR ...")
 try:
-    vr = pywsidicom.VR.create_from_name("banana")
+    vr = pylibdicom.VR.create_from_name("banana")
 except Exception as e:
     print(f"expected failure, exception is:")
     print(f"  {e}")
 
 print(f"testing create_from_file ...")
-file = pywsidicom.Filehandle.create_from_file("sm_image.dcm")
+file = pylibdicom.Filehandle.create_from_file("sm_image.dcm")
 print(f"file = {file}")
 
 print(f"testing create_from_file error handling ...")
 try:
-    file = pywsidicom.Filehandle.create_from_file("banana.dcm")
+    file = pylibdicom.Filehandle.create_from_file("banana.dcm")
 except Exception as e:
     print(f"expected failure, exception is:")
     print(f"  {e}")
@@ -45,7 +45,7 @@ def print_dataset(dataset, indent=0):
     for tag in dataset.tags():
         element = dataset.get(tag)
         print(f"{' '*indent}{element}")
-        if element.vr_class() == pywsidicom.VRClass.SEQUENCE:
+        if element.vr_class() == pylibdicom.VRClass.SEQUENCE:
             seq = element.get_value()
             print_sequence(seq, indent + 2)
 
@@ -65,7 +65,7 @@ print(f"tags = {tags}")
 print(f"contains(tags[0]) = {metadata.contains(tags[0])}")
 print_dataset(metadata)
 
-num_frames_tag = pywsidicom.Tag.create_from_keyword("NumberOfFrames")
+num_frames_tag = pylibdicom.Tag.create_from_keyword("NumberOfFrames")
 num_frames = int(metadata.get(num_frames_tag).get_value()[0])
 for frame_number in range(1, num_frames + 1):
     frame = file.read_frame(frame_number)

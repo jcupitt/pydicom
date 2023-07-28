@@ -1,9 +1,9 @@
-import pywsidicom
-from pywsidicom import ffi, dicom_lib, _to_string, _to_bytes
+import pylibdicom
+from pylibdicom import ffi, dicom_lib, _to_string, _to_bytes
 
 """
 usage:
-        error = pywsidicom.Error()
+        error = pylibdicom.Error()
         pointer = dicom_lib.dcm_filehandle_create_from_file(error.pointer,
                                                             _to_bytes(filename))
         if pointer == ffi.NULL:

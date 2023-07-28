@@ -1,5 +1,5 @@
-import pywsidicom
-from pywsidicom import ffi, dicom_lib, _to_string, _to_bytes
+import pylibdicom
+from pylibdicom import ffi, dicom_lib, _to_string, _to_bytes
 
 class VR:
     def __init__(self, value):
