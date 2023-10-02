@@ -1,9 +1,9 @@
 # pylibdicom
 
 This is a tiny, experimental binding for
-[libdicom](https://github.com/jcupitt/libdicom). This is a DICOM read
-library focused on Whole Slide Imaging (WSI). It should be fast, and only
-needs a little memory.
+[libdicom](https://github.com/ImagingDataCommons/libdicom). This is a
+DICOM read library focused on Whole Slide Imaging (WSI). It should be fast,
+and only needs a little memory.
 
 This binding was made to validate the libdicom API. It is not supposed to
 be ready for production! There are plenty of obvious missing features and
@@ -141,6 +141,3 @@ libdicom version: 1.0.0
 (0008,1090) ManufacturerModelName | LO | 10 | 1 | Test Model
 (0008,9206) VolumetricProperties | CS | 6 | 1 | VOLUME
 ...
-```
-
-

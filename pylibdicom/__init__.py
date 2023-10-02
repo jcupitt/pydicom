@@ -34,8 +34,8 @@ void dcm_filehandle_destroy(DcmFilehandle *filehandle);
 
 DcmDataSet *dcm_filehandle_get_file_meta(DcmError **error,
                                          DcmFilehandle *filehandle);
-DcmDataSet *dcm_filehandle_get_metadata(DcmError **error,
-                                        DcmFilehandle *filehandle);
+DcmDataSet *dcm_filehandle_get_metadata_subset(DcmError **error,
+                                               DcmFilehandle *filehandle);
 bool dcm_filehandle_read_pixeldata(DcmError **error, DcmFilehandle *filehandle);
 DcmFrame *dcm_filehandle_read_frame(DcmError **error,
                                     DcmFilehandle *filehandle,

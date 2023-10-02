@@ -32,8 +32,8 @@ class Filehandle:
 
     def get_metadata(self):
         error = pylibdicom.Error()
-        pointer = dicom_lib.dcm_filehandle_get_metadata(error.pointer,
-                                                        self.pointer)
+        pointer = dicom_lib.dcm_filehandle_get_metadata_subset(error.pointer,
+                                                               self.pointer)
         if pointer == ffi.NULL:
             raise error.exception()
 
